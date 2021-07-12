@@ -69,7 +69,16 @@ export class IOCard extends React.Component<IOCardProps, IOCardState> {
     render() {
         return (
             <div className="io-card">
-                <h1>{this.props.heading}</h1>
+                {
+                    this.props.heading === "Input:" ? (
+                        <div className="heading-flex">
+                            <h1>{this.props.heading}</h1>
+                            <button>Send</button>
+                        </div>
+                    ) : (
+                        <h1>{this.props.heading}</h1>
+                    )
+                }
                 <select size={1} onChange={
                     (e: any) => this.setState({inputType: e.target.value})
                 }>
