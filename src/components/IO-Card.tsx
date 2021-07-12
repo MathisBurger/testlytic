@@ -27,7 +27,7 @@ export class IOCard extends React.Component<IOCardProps, IOCardState> {
                     onChange={
                         this.props.valueChanger === undefined ?
                             null :
-                            (e: any) => this.props.valueChanger(e)
+                            (e: any) => this.props.valueChanger(e.plainText)
                     }
                     colors={{
                         background: "#414141"
@@ -44,12 +44,12 @@ export class IOCard extends React.Component<IOCardProps, IOCardState> {
         } else {
             return <JSONInput
                     locale={locale}
-                    placeholder={Object(this.props.value)}
+                    placeholder={JSON.parse(this.props.value as string)}
                     viewOnly={true}
                     onChange={
                         this.props.valueChanger === undefined ?
                             null :
-                            (e: any) => this.props.valueChanger(e)
+                            (e: any) => this.props.valueChanger(e.plainText)
                     }
                     colors={{
                         background: "#414141"
@@ -73,7 +73,15 @@ export class IOCard extends React.Component<IOCardProps, IOCardState> {
                     this.props.heading === "Input:" ? (
                         <div className="heading-flex">
                             <h1>{this.props.heading}</h1>
-                            <button>Send</button>
+                            <button
+                                onClick={() => {
+                                    if (this.props.sender !== undefined) {
+                                        this.props.sender();
+                                    } else {
+                                        alert("Error while calling message sender");
+                                    }
+                                }}
+                            >Send</button>
                         </div>
                     ) : (
                         <h1>{this.props.heading}</h1>
@@ -88,11 +96,11 @@ export class IOCard extends React.Component<IOCardProps, IOCardState> {
                 {
                     this.state.inputType === "JSON" ?
                     this.getJSONInput() : (
-                        <textarea
-                            className="text-input"
-                            onChange={(e: any) => this.props.valueChanger(e.target.value)}
-                            value={this.props.value as string}
-                        />
+                            <textarea
+                                className="text-input"
+                                onChange={(e: any) => this.props.valueChanger(e.target.value)}
+                                value={(this.props.value as any) === "" ? undefined : this.props.value as any}
+                            />
                     )
                 }
             </div>

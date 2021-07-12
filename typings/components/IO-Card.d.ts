@@ -3,6 +3,7 @@ export interface IOCardProps {
     value: string | Object;
     heading: string;
     inputType?: string;
+    sender?: any;
 }
 
 export interface IOCardState {
