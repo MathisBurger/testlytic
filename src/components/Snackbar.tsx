@@ -3,9 +3,6 @@ import {SnackbarProps} from "../../typings/components/Snackbar";
 import ReactDOM from "react-dom";
 
 export class Snackbar extends React.Component<SnackbarProps, any> {
-    constructor(props: SnackbarProps) {
-        super(props);
-    }
 
     componentDidMount() {
         setTimeout(

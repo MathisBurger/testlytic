@@ -6,7 +6,6 @@ import {Websocket} from "./services/Websocket";
 import {IMessageEvent} from "websocket";
 import ReactDOM from "react-dom";
 import {Snackbar} from "./components/Snackbar";
-import {type} from "os";
 
 export default class App extends React.Component<any, AppState> {
 
