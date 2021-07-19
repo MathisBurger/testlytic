@@ -3,7 +3,10 @@ import "./App.css";
 import {IOCard} from "./components/IO-Card";
 import {AppState} from "../typings/App";
 import {Websocket} from "./services/Websocket";
-import {IMessage, IMessageEvent} from "websocket";
+import {IMessageEvent} from "websocket";
+import ReactDOM from "react-dom";
+import {Snackbar} from "./components/Snackbar";
+import {type} from "os";
 
 export default class App extends React.Component<any, AppState> {
 
@@ -19,6 +22,23 @@ export default class App extends React.Component<any, AppState> {
         this.changeInputValue = this.changeInputValue.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.messageReciver = this.messageReciver.bind(this);
+        this.errorHandler = this.errorHandler.bind(this);
+    }
+
+    // handles all errors coming from the websocket,
+    // by showing a snackbar of the error message
+    errorHandler(err: any): void {
+        if (err.currentTarget !== undefined && err.currentTarget.readyState === 3) {
+            ReactDOM.render(
+                <Snackbar message={"Cannot open websocket on " + err.currentTarget.url} color={"#CB1212"}/>,
+                document.getElementById("snackbar")
+            );
+            return;
+        }
+        ReactDOM.render(
+            <Snackbar message={err.name} color={"#CB1212"}/>,
+            document.getElementById("snackbar")
+        );
     }
 
     // Handles the message traffic coming from
@@ -31,24 +51,30 @@ export default class App extends React.Component<any, AppState> {
     // if the connection is not completely established.
     openConnection(waiting: boolean = false, ws: Websocket | undefined = undefined): void {
         if (!waiting) {
-            let ws = new Websocket(this.state.url);
+            let ws = new Websocket(this.state.url, this.errorHandler);
+            if (ws.websocket === undefined) {
+                return;
+            }
             ws.websocket.onmessage = this.messageReciver;
             setTimeout(() => {
                 this.openConnection(true, ws);
             }, 5);
         } else {
-            if (ws && ws?.websocket.readyState === 1) {
-               this.setState({websocket: ws as Websocket, connected: true});
-            } else {
-                setTimeout(() => {
-                    this.openConnection(true, ws);
-                }, 5);
+            if (ws?.websocket !== undefined) {
+                if (ws && ws?.websocket.readyState === 1) {
+                    this.setState({websocket: ws as Websocket, connected: true});
+                } else {
+                    setTimeout(() => {
+                        this.openConnection(true, ws);
+                    }, 5);
+                }
             }
         }
     }
 
     // Closes the active websocket connection
     closeConnection(): void {
+        // @ts-ignore
         this.state.websocket?.websocket.close();
         this.setState({connected: false});
     }
@@ -63,7 +89,10 @@ export default class App extends React.Component<any, AppState> {
     // trough the active websocket connection
     sendMessage(): void {
         if (this.state.websocket === undefined){
-            alert("No active websocket connection");
+            ReactDOM.render(
+                <Snackbar message={"No active websocket connection"} color={"#CB1212"}/>,
+                document.getElementById("snackbar")
+            );
         } else {
             (this.state.websocket as Websocket).sendMessage(this.state.inputText);
         }

@@ -111,3 +111,26 @@
   border-radius: 5px;
   font-family: 'Roboto', sans-serif;
 }
+.snackbar {
+  position: fixed;
+  left: 50%;
+  bottom: -5em;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  color: white;
+  padding: 15px 40px 15px 40px;
+  border-radius: 10px;
+  font-family: "Arial", Times, serif;
+  font-weight: bold;
+  animation-name: snackbar-hover-in;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes snackbar-hover-in {
+  0% {
+    bottom: -5em;
+  }
+  100% {
+    bottom: 20px;
+  }
+}

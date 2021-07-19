@@ -3,6 +3,8 @@ import JSONInput from "react-json-editor-ajrm";
 // @ts-ignore
 import locale from "react-json-editor-ajrm/locale/en";
 import {IOCardProps, IOCardState} from "../../typings/components/IO-Card";
+import ReactDOM from "react-dom";
+import {Snackbar} from "./Snackbar";
 
 export class IOCard extends React.Component<IOCardProps, IOCardState> {
 
@@ -78,7 +80,10 @@ export class IOCard extends React.Component<IOCardProps, IOCardState> {
                                     if (this.props.sender !== undefined) {
                                         this.props.sender();
                                     } else {
-                                        alert("Error while calling message sender");
+                                        ReactDOM.render(
+                                            <Snackbar message={"Error while calling message sender"} color={"#CB1212"}/>,
+                                            document.getElementById("snackbar")
+                                        );
                                     }
                                 }}
                             >Send</button>
