@@ -3,11 +3,11 @@ name: Release Electron App
 on:
   release:
     types:
-      - published
+      - created
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Check out Git repository
