@@ -22,3 +22,5 @@ jobs:
         run: yarn install
       - name: Publish
         run: yarn release
+      - name: install snapcraft
+        run: sudo snap install snapcraft --classic
