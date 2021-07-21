@@ -1,12 +1,15 @@
 name: Release Electron App
 
 on:
-  release:
+  pull_request:
     types:
-      - created
+      - closed
+    branches:
+      - master
 
 jobs:
   release:
+    if: github.event.pull_request.merged == true
     runs-on: windows-latest
 
     steps:
