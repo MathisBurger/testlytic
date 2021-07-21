@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-      - name: Publish
-        run: yarn release
       - name: install snapcraft
         run: sudo snap install snapcraft --classic
+      - name: Publish
+        run: yarn release
