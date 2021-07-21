@@ -21,6 +21,6 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn release
-      - name: install snapcraft
-        run: sudo snap install snapcraft --classic
