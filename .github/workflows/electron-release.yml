@@ -9,8 +9,11 @@ on:
 
 jobs:
   release:
+    strategy:
+      matrix:
+        platform: [windows-latest, macos-latest]
     if: github.event.pull_request.merged == true
-    runs-on: windows-latest
+    runs-on: ${{ matrix.platform }}
 
     steps:
       - name: Check out Git repository
